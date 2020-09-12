@@ -4,6 +4,7 @@ const path = require('path');
 const router = express.Router();
 const DbManager = require('node-json-db');
 const DBConfiguration = require('node-json-db/dist/lib/JsonDBConfig');
+let io = null;
 
 let db = new DbManager.JsonDB(new DBConfiguration.Config("myDb", true, false, '/'));
 
@@ -13,6 +14,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/add/:number', function (req, res) {
+    io.emit('calc', req.params.number);
     try {
         let records = db.getData("/list");
         let arr = records.results;
@@ -24,6 +26,7 @@ router.get('/add/:number', function (req, res) {
         arr.push(req.params.number);
         db.push("/list", { arr: arr }, false);
     }
+
     res.json({ status: 'success' });
 });
 
@@ -38,6 +41,13 @@ router.get('/refresh', function (req, res) {
 
 app.use('/', router);
 app.use('/', express.static(__dirname + '/src/static'));
-app.listen(process.env.PORT || 3000);
+const port = process.env.PORT || 3000
+const server = app.listen(port);
 
-console.log('Running at Port 3000');
+//const server = require('http').createServer(app);
+io = require('socket.io')(server);
+io.on('connection', () => {
+    console.log("client connected :)")
+});
+
+console.log('Running at Port ', port);

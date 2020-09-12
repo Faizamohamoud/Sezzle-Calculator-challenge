@@ -1,4 +1,23 @@
-   function calculate() {
+
+
+var socket = io(location.origin);
+socket.on('connect', function(){
+    console.log('I am connected')
+});
+socket.on('calc', function(data){
+    let list = document.getElementById("list-of-results");
+    //document.getElementById("list-of-results").innerHTML = '';
+    let createdLi = document.createElement("li");
+    createdLi.innerText = data;
+    list.appendChild(createdLi);
+    console.log('data', data);
+});
+socket.on('disconnect', function(){
+
+});
+
+
+function calculate() {
     const number1 = document.getElementById("number1").value;
     const number2 = document.getElementById("number2").value;
     let result = document.getElementById("result");
