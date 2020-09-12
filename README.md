@@ -1,5 +1,5 @@
 # Sezzle-Calculator
-Link to project demo(https://5f55bc1fcbf55bd7673a2440--sezzle-calc.netlify.app)
+Link to project demo(https://sezzle-calculators.herokuapp.com)
 
 Specifications
 
